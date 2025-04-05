@@ -1,0 +1,10 @@
+[Unit]
+Description=特定时间的定时任务示例
+
+[Timer]
+OnCalendar=2025-04-10 14:30:00
+AccuracySec=1s
+Unit=bing-wallpaper.service
+
+[Install]
+WantedBy=timers.target
