@@ -113,7 +113,7 @@ if [ -z "$FULLSTARTDATE" ]; then
 fi
 
 FULLSTARTDATE_FMT=$(date -d "${FULLSTARTDATE:0:8} ${FULLSTARTDATE:8:2}:${FULLSTARTDATE:10:2}" "+%Y-%m-%d %H:%M UTC")
-FULLSTARTDATE=$(TZ="Asia/Shanghai" date -d "$FULLSTARTDATE_FMT + $REFRESH_DUE_H hours $REFRESH_DUE_M minutes" "+%Y-%m-%d %H:%M:%S")
+FULLSTARTDATE=$(TZ=$(timedatectl | grep "Time zone" | awk '{print $3}') date -d "$FULLSTARTDATE_FMT + $REFRESH_DUE_H hours $REFRESH_DUE_M minutes" "+%Y-%m-%d %H:%M:%S")
 
 # 如果不存在定时器文件
 if [ -f "TIMER_FILE" ]; then
