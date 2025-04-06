@@ -62,8 +62,16 @@ else
     else
         # 如果 /etc/swaylock/config 也不存在，创建基本配置文件
         mkdir -p "$(dirname "$SWAYLOCK_CONFIG")"
-        echo "image=$BLURRED_FILE" > "$SWAYLOCK_CONFIG"
-        echo "scaling=fill" >> "$SWAYLOCK_CONFIG"
+        cat << EOF > $SWAYLOCK_CONFIG
+# The defaults below could be overridden in \$XDG_CONFIG_HOME/swaylock/config
+#  (~/.config/swaylock/config).
+#
+# Image path supports environment variables and shell expansions,
+# e.g. image=\$HOME/Pictures/default.png
+# image=/usr/share/backgrounds/default.png
+image=$BLURRED_FILE
+scaling=fill
+EOF
     fi
 fi
 
