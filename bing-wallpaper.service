@@ -1,7 +1,0 @@
-[Unit]
-Description=特定时间的一次性任务示例
-
-[Service]
-ExecStart=/var/home/bryan/Applications/file/bing-wallpaper.sh
-Type=oneshot
-RemainAfterExit=no

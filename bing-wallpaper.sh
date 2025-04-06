@@ -94,13 +94,11 @@ else
 fi
 
 # 设置systemd刷新定时器
-FOLDER="$HOME/Applications/file"
+SCRIPT_PATH=$(realpath $0)
 REFRESH_DUE_H="24"
 REFRESH_DUE_M="5"
 TIMER_FILE="$HOME/.config/systemd/user/bing-wallpaper.timer"
-DEFAULT_TIMER_FILE="$FOLDER/bing-wallpaper.timer"
 TIMER_SERVICE="$HOME/.config/systemd/user/bing-wallpaper.service"
-DEFAULT_TIMER_SERVICE="$FOLDER/bing-wallpaper.service"
 
 API_URL="https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1"
 FULLSTARTDATE=$(curl -s "$API_URL" | grep -m 1 -o '"fullstartdate":"[^"]*"' | sed 's/"fullstartdate":"\(.*\)"/\1/')
@@ -120,14 +118,32 @@ if [ -f "TIMER_FILE" ]; then
     sed -i "s|^OnCalendar=.*$|OnCalendar=$FULLSTARTDATE|" "$TIMER_FILE"
 else
     mkdir -p "$(dirname "$TIMER_FILE")"
-    cp "$DEFAULT_TIMER_FILE" "$TIMER_FILE"
-    sed -i "s|^OnCalendar=.*$|OnCalendar=$FULLSTARTDATE|" "$TIMER_FILE"
+    cat << EOF > $TIMER_FILE
+[Unit]
+Description=特定时间的定时任务示例
+
+[Timer]
+OnCalendar=$FULLSTARTDATE
+AccuracySec=1s
+Unit=bing-wallpaper.service
+
+[Install]
+WantedBy=timers.target
+EOF
 fi
 
 # 如果不存在定时服务文件
 if [ ! -f "$TIMER_SERVICE" ]; then
     mkdir -p "$(dirname "$TIMER_SERVICE")"
-    cp "$DEFAULT_TIMER_SERVICE" "$TIMER_SERVICE"
+    cat << EOF > $TIMER_SERVICE
+[Unit]
+Description=特定时间的一次性任务示例
+
+[Service]
+ExecStart=$(realpath $0)
+Type=oneshot
+RemainAfterExit=no
+EOF
 fi
 
 systemctl --user daemon-reload
