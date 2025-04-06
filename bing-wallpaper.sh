@@ -147,5 +147,7 @@ EOF
 fi
 
 systemctl --user daemon-reload
-systemctl --user enable bing-wallpaper.timer
+if [ ! -f "$HOME/.config/systemd/user/timers.target.wants/bing-wallpaper.timer" ]; then
+    systemctl --user enable bing-wallpaper.timer
+fi
 systemctl --user restart bing-wallpaper.timer
