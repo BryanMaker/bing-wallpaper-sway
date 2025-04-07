@@ -30,8 +30,7 @@ fi
 
 # 删除多余壁纸，仅保留最新的 8 张
 # 使用 ls -t 按时间排序，列出所有 jpg 文件，跳过最新 8 个，删除其余的
-cd "$WALLPAPER_DIR" || exit
-mapfile -t OLD_FILES < <(ls -t *.jpg 2>/dev/null | tail -n +$((MAX_WALLPAPERS + 1)))
+mapfile -t OLD_FILES < <(ls -t "$WALLPAPER_DIR"/*.jpg 2>/dev/null | tail -n +$((MAX_WALLPAPERS + 1)))
 if [ ${#OLD_FILES[@]} -gt 0 ]; then
     rm -f "${OLD_FILES[@]}"
 fi
