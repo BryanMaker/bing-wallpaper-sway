@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # 定义壁纸保存路径和文件名
+SCRIPT_PATH=$(realpath $0)
 WALLPAPER_DIR="$HOME/Pictures/BingWallpapers"
 WALLPAPER_FILE="$WALLPAPER_DIR/bing_wallpaper_$(date +%Y%m%d).jpg"
 BLURRED_FILE="$WALLPAPER_DIR/bing_wallpaper_$(date +%Y%m%d)_blurred.jpg"
@@ -102,7 +103,6 @@ else
 fi
 
 # 设置systemd刷新定时器
-SCRIPT_PATH=$(realpath $0)
 REFRESH_DUE_H="24"
 REFRESH_DUE_M="5"
 TIMER_FILE="$HOME/.config/systemd/user/bing-wallpaper.timer"
@@ -148,7 +148,7 @@ if [ ! -f "$TIMER_SERVICE" ]; then
 Description=特定时间的一次性任务示例
 
 [Service]
-ExecStart=$(realpath $0)
+ExecStart=$SCRIPT_PATH
 Type=oneshot
 RemainAfterExit=no
 EOF
