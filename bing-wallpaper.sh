@@ -145,11 +145,13 @@ if [ ! -f "$TIMER_SERVICE" ]; then
     cat << EOF > $TIMER_SERVICE
 [Unit]
 Description=特定时间的一次性任务示例
+After=graphical-session.target
 
 [Service]
 ExecStart=$SCRIPT_PATH
 Type=oneshot
 RemainAfterExit=no
+KillMode=process
 EOF
 fi
 
